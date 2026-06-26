@@ -1,0 +1,11 @@
+{
+    "title": "LuaRace - Street Races (Glide)",
+    "type": "gamemode_content",
+    "tags": [ "fun", "roleplay" ],
+    "ignore": [
+        "*.psd",
+        "*.vcproj",
+        "*.git*",
+        "README.md"
+    ]
+}
