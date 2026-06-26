@@ -104,6 +104,7 @@ function LuaRace.GoIdle()
 	G.stateEnd = 0
 	G.winner   = -1
 	G.revealed = {}
+	if LuaRace.CleanupVehicles then LuaRace.CleanupVehicles() end
 	ResetPlayers()
 	LuaRace.Broadcast()
 end
@@ -120,6 +121,7 @@ function LuaRace.StartRace()
 	end
 
 	LuaRace.AssignRoles( participants )
+	LuaRace.SpawnRoleVehicles() -- give each player their chosen role car
 
 	G.state    = LuaRace.STATE_COUNTDOWN
 	G.stateEnd = CurTime() + LuaRace.Cvar( "headstart" )

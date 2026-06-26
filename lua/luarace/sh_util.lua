@@ -4,8 +4,9 @@ LuaRace = LuaRace or {}
 
 -- Network strings.
 if SERVER then
-	util.AddNetworkString( "LuaRace.Sync" )   -- broadcast game state each tick
-	util.AddNetworkString( "LuaRace.Event" )  -- one-off events (start, bust, win...)
+	util.AddNetworkString( "LuaRace.Sync" )        -- broadcast game state each tick
+	util.AddNetworkString( "LuaRace.Event" )       -- one-off events (start, bust, win...)
+	util.AddNetworkString( "LuaRace.PickVehicle" ) -- client -> server vehicle choice
 end
 
 -- Networked-var keys (set per player on the server, auto-replicated).

@@ -19,6 +19,7 @@ local SHARED = {
 local SERVER_FILES = {
 	"luarace/sv_core.lua",
 	"luarace/sv_roles.lua",
+	"luarace/sv_vehicles.lua",
 	"luarace/sv_bust.lua",
 	"luarace/sv_reveal.lua",
 	"luarace/sv_commands.lua",
@@ -28,6 +29,7 @@ local CLIENT_FILES = {
 	"luarace/cl_net.lua",
 	"luarace/cl_hud.lua",
 	"luarace/cl_blips.lua",
+	"luarace/cl_menu.lua",
 }
 
 -- Make client files downloadable, then run shared + the realm-specific files.

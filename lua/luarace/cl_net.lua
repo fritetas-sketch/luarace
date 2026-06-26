@@ -95,4 +95,7 @@ net.Receive( "LuaRace.Event", function()
 	local data = raw ~= "" and util.JSONToTable( raw ) or {}
 	local h = handlers[ name ]
 	if h then h( data or {} ) end
+
+	-- Let other client files react to events too (e.g. the menu).
+	hook.Run( "LuaRace.Event", name, data or {} )
 end )

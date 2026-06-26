@@ -27,6 +27,14 @@ local function doStop( ply )
 	notify( ply, "Course arretee." )
 end
 
+local function doMenu( ply )
+	if not IsValid( ply ) then return end
+	net.Start( "LuaRace.Event" )
+		net.WriteString( "openmenu" )
+		net.WriteString( "" )
+	net.Send( ply )
+end
+
 local function doInfo( ply )
 	local cops, runners, active = LuaRace.CountRoles()
 	notify( ply, ("Etat: %d | Police: %d | Fuyards: %d (%d en fuite)")
@@ -46,8 +54,10 @@ hook.Add( "PlayerSay", "LuaRace.Chat", function( ply, text )
 	local sub = args[ 2 ] or "info"
 	if sub == "start" or sub == "go" then
 		doStart( ply )
-	elseif sub == "stop" or sub == "st-op" then
+	elseif sub == "stop" then
 		doStop( ply )
+	elseif sub == "car" or sub == "menu" or sub == "voiture" then
+		doMenu( ply )
 	else
 		doInfo( ply )
 	end

@@ -27,6 +27,65 @@ LuaRace.RoleNames = {
 	[LuaRace.ROLE_NONE]   = "SPECTATEUR",
 }
 
+--[[ Vehicle pools per role. Players pick which car they want from their side's
+     list; the addon spawns it for them when a race starts.
+     These are Glide entity classes from the NFS Undercover car pack. ]]
+LuaRace.Vehicles = {
+	[LuaRace.ROLE_RUNNER] = {
+		"nfsuc_toy_sup_stk_98custom",
+		"nfsuc_nis_sky_r34_99_custom",
+		"nfsuc_mit_evo_ix_06_extra",
+		"nfsuc_nis_sky_aer_99_custom",
+		"nfsuc_nis_sky_aer_99_kingai",
+		"nfsuc_toy_sup_stk_98_darius",
+		"nfsuc_bmw_m3_e46_03_legendmw",
+	},
+	[LuaRace.ROLE_COP] = {
+		"nfsuc_dod_chr_bee_07_tcbpd",
+		"nfsuc_cop_car_suvl_04",
+		"nfsuc_for_mus_gt_06_tcb",
+		"nfsuc_cop_car_mus_08_reformed",
+		"nfsuc_cop_car_mus_08",
+	},
+}
+
+-- Friendly names shown in the selection menu.
+LuaRace.VehicleNames = {
+	[ "nfsuc_toy_sup_stk_98custom" ]   = "Toyota Supra (Custom)",
+	[ "nfsuc_nis_sky_r34_99_custom" ]  = "Nissan Skyline R34 (Custom)",
+	[ "nfsuc_mit_evo_ix_06_extra" ]    = "Mitsubishi Lancer Evo IX",
+	[ "nfsuc_nis_sky_aer_99_custom" ]  = "Nissan Skyline AERO (Custom)",
+	[ "nfsuc_nis_sky_aer_99_kingai" ]  = "Nissan Skyline AERO (King AI)",
+	[ "nfsuc_toy_sup_stk_98_darius" ]  = "Toyota Supra (Darius)",
+	[ "nfsuc_bmw_m3_e46_03_legendmw" ] = "BMW M3 E46 (Legend)",
+	[ "nfsuc_dod_chr_bee_07_tcbpd" ]   = "Dodge Charger SRT8 (Police)",
+	[ "nfsuc_cop_car_suvl_04" ]        = "SUV de Police",
+	[ "nfsuc_for_mus_gt_06_tcb" ]      = "Ford Mustang GT (TCB)",
+	[ "nfsuc_cop_car_mus_08_reformed" ]= "Police Mustang (Reformed)",
+	[ "nfsuc_cop_car_mus_08" ]         = "Police Mustang",
+}
+
+-- Pretty label for a class, falling back to the raw class name.
+function LuaRace.VehicleLabel( class )
+	return LuaRace.VehicleNames[ class ] or class
+end
+
+-- Is `class` a valid choice for `role`?
+function LuaRace.IsAllowedVehicle( role, class )
+	local list = LuaRace.Vehicles[ role ]
+	if not list then return false end
+	for _, c in ipairs( list ) do
+		if c == class then return true end
+	end
+	return false
+end
+
+-- Default car for a role (first in the list).
+function LuaRace.DefaultVehicle( role )
+	local list = LuaRace.Vehicles[ role ]
+	return list and list[ 1 ] or ""
+end
+
 --[[ ConVars (server-authoritative, replicated so the client can read them). ]]
 if SERVER then
 	local FCVAR = { FCVAR_ARCHIVE, FCVAR_REPLICATED, FCVAR_NOTIFY }
@@ -54,6 +113,9 @@ if SERVER then
 
 	-- If 1, only players currently in a Glide vehicle take part in the race.
 	CreateConVar( "luarace_require_vehicle", "0", FCVAR, "Only count players inside a Glide vehicle as participants", 0, 1 )
+
+	-- If 1, the addon spawns each player's chosen role car and seats them in it.
+	CreateConVar( "luarace_give_vehicles", "1", FCVAR, "Spawn role vehicles for participants at race start", 0, 1 )
 
 	-- Minimum players needed to start a race.
 	CreateConVar( "luarace_min_players", "2", FCVAR, "Minimum participants required to start", 1, 64 )

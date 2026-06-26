@@ -26,6 +26,27 @@ Tous les autres joueurs sont la **police** et doivent les coffrer avant la fin.
   secondes. Affichage par marqueur à l'écran + flèche directionnelle quand le
   fuyard est hors champ, avec la distance en mètres.
 
+## Choix du véhicule
+
+Chaque joueur choisit la voiture qu'il veut **dans la liste de son camp** via le
+menu (`!race car` ou console `luarace_menu`, ex. `bind o luarace_menu`). Le choix
+est sauvegardé. Au lancement de la course, l'addon **spawn la voiture du rôle
+attribué** et y assoit le joueur automatiquement (réglable : `luarace_give_vehicles`).
+
+**Voitures Fuyard (criminels)**
+`nfsuc_toy_sup_stk_98custom`, `nfsuc_nis_sky_r34_99_custom`,
+`nfsuc_mit_evo_ix_06_extra`, `nfsuc_nis_sky_aer_99_custom`,
+`nfsuc_nis_sky_aer_99_kingai`, `nfsuc_toy_sup_stk_98_darius`,
+`nfsuc_bmw_m3_e46_03_legendmw`
+
+**Voitures Police**
+`nfsuc_dod_chr_bee_07_tcbpd`, `nfsuc_cop_car_suvl_04`,
+`nfsuc_for_mus_gt_06_tcb`, `nfsuc_cop_car_mus_08_reformed`,
+`nfsuc_cop_car_mus_08`
+
+> Ces listes se modifient dans `lua/luarace/sh_config.lua` (`LuaRace.Vehicles`).
+> Il faut le pack de voitures NFS Undercover (Glide) installé sur serveur + clients.
+
 ## Installation
 
 1. Avoir l'addon **Glide** installé sur le serveur et les clients.
@@ -38,6 +59,7 @@ Tous les autres joueurs sont la **police** et doivent les coffrer avant la fin.
 |-----------------|------------------|--------------------------------|
 | `!race start`   | `luarace_start`  | Démarre une course (admin)     |
 | `!race stop`    | `luarace_stop`   | Arrête la course (admin)       |
+| `!race car`     | `luarace_menu`   | Ouvre le menu de choix de voiture |
 | `!race info`    | `luarace_info`   | Affiche l'état courant         |
 
 ## Configuration (ConVars)
@@ -67,12 +89,14 @@ lua/luarace/
   sh_util.lua     -- helpers + net strings
   sv_core.lua     -- machine à états, tick, sync réseau
   sv_roles.lua    -- participants, ratio, attribution des rôles, head start
+  sv_vehicles.lua -- choix + spawn des voitures par rôle
   sv_bust.lua     -- arrestations par proximité
   sv_reveal.lua   -- pings de repérage
   sv_commands.lua -- commandes admin
   cl_net.lua      -- réception de l'état + events (sons/popups)
   cl_hud.lua      -- HUD (chrono, rôle, scores, barre d'arrestation)
   cl_blips.lua    -- marqueurs/flèches des fuyards repérés
+  cl_menu.lua     -- menu de sélection du véhicule
 ```
 
 ## Idées / roadmap
