@@ -24,8 +24,8 @@ Tous les autres joueurs sont la **police** et doivent les coffrer avant la fin.
   est quasiment à l'arrêt** (sinon impossible : pas question de coffrer juste en
   roulant à côté). Plus le flic est près, plus ça va vite. Une barre de
   progression prévient le fuyard qu'il est en train de se faire prendre.
-- **Mini-radar** circulaire en bas à droite + flèches directionnelles pour la
-  police, et un **décompte plein écran « 3·2·1·GO »** à la fin du head start.
+- **Flèches directionnelles** + marqueurs pour la police, et un **décompte plein
+  écran « 3·2·1·GO »** à la fin du head start.
 - **Indice « IMMOBILISEZ-LE ! »** affiché au-dessus d'un fuyard repéré dès qu'il
   est assez lent pour être arrêté, pour guider les flics.
 - **Véhicule verrouillé** : impossible de descendre de sa voiture pendant la
