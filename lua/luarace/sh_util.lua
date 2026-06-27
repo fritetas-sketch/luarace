@@ -50,6 +50,21 @@ function LuaRace.GetTrackPos( ply )
 	return ply:GetPos()
 end
 
+-- Speed (units/s) of whatever the player is tracked by (vehicle or self).
+function LuaRace.GetTrackSpeed( ply )
+	if not IsValid( ply ) then return 0 end
+
+	if ply.GlideGetVehicle then
+		local veh = ply:GlideGetVehicle()
+		if IsValid( veh ) then return veh:GetVelocity():Length() end
+	end
+
+	local veh = ply:GetVehicle()
+	if IsValid( veh ) then return veh:GetVelocity():Length() end
+
+	return ply:GetVelocity():Length()
+end
+
 -- Is the player currently sitting in a Glide vehicle?
 function LuaRace.InGlideVehicle( ply )
 	if not IsValid( ply ) or not ply.GlideGetVehicle then return false end

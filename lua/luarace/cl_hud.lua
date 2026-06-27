@@ -4,6 +4,7 @@ LuaRace = LuaRace or {}
 
 local C = LuaRace.Client
 
+surface.CreateFont( "LuaRace.Huge", { font = "Roboto", size = 200, weight = 900 } )
 surface.CreateFont( "LuaRace.Big", { font = "Roboto", size = 46, weight = 800 } )
 surface.CreateFont( "LuaRace.Med", { font = "Roboto", size = 26, weight = 700 } )
 surface.CreateFont( "LuaRace.Small", { font = "Roboto", size = 19, weight = 600 } )
@@ -101,9 +102,34 @@ local function drawPopup()
 	drawShadowText( p.text, "LuaRace.Big", ScrW() * 0.5, ScrH() * 0.32, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
 end
 
+-- Full-screen "3 . 2 . 1 . GO !" around the head-start transition.
+local function drawStartCountdown()
+	local cx, cy = ScrW() * 0.5, ScrH() * 0.42
+
+	-- The GO flash takes priority for its short window.
+	if LuaRace.GoFlashUntil and RealTime() < LuaRace.GoFlashUntil then
+		local left = LuaRace.GoFlashUntil - RealTime()
+		local a = math.Clamp( left * 255, 0, 255 )
+		drawShadowText( "GO !", "LuaRace.Huge", cx, cy, Color( 90, 255, 120, a ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+		return
+	end
+
+	if C.state ~= LuaRace.STATE_COUNTDOWN then return end
+
+	local tl = LuaRace.GetTimeLeft()
+	if tl <= 0 or tl > 3.99 then return end
+
+	local n = math.ceil( tl )
+	local frac = tl - ( n - 1 ) -- 1 -> 0 as the second elapses
+	local a = math.Clamp( frac * 255 + 40, 0, 255 )
+	local col = Color( 255, 210, 80, a )
+	drawShadowText( tostring( n ), "LuaRace.Huge", cx, cy, col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+end
+
 hook.Add( "HUDPaint", "LuaRace.HUD", function()
 	-- Popups can show even between rounds.
 	drawPopup()
+	drawStartCountdown()
 
 	if C.state == LuaRace.STATE_IDLE then return end
 

@@ -59,6 +59,7 @@ local handlers = {
 		surface.PlaySound( "buttons/button17.wav" )
 	end,
 	chase = function()
+		LuaRace.GoFlashUntil = RealTime() + 1.6 -- triggers the full-screen "GO !"
 		local role = LuaRace.GetRole( LocalPlayer() )
 		if role == LuaRace.ROLE_COP then
 			popup( "LACHEZ LES CHIENS ! Attrapez les fuyards.", LuaRace.RoleColors[ LuaRace.ROLE_COP ], 4 )

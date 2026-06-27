@@ -20,9 +20,12 @@ Tous les autres joueurs sont la **police** et doivent les coffrer avant la fin.
 - **Chrono** : 2 minutes par défaut.
   - Si **au moins un fuyard survit** → les fuyards gagnent.
   - Si **tous les fuyards sont coffrés** → la police gagne.
-- **Arrestation** : un flic doit rester proche d'un fuyard quelques secondes
-  d'affilée. Plus il est près, plus ça va vite. Une barre de progression
-  prévient le fuyard qu'il est en train de se faire prendre.
+- **Arrestation** : un flic doit rester proche d'un fuyard **alors que celui-ci
+  est quasiment à l'arrêt** (sinon impossible : pas question de coffrer juste en
+  roulant à côté). Plus le flic est près, plus ça va vite. Une barre de
+  progression prévient le fuyard qu'il est en train de se faire prendre.
+- **Mini-radar** circulaire en bas à droite + flèches directionnelles pour la
+  police, et un **décompte plein écran « 3·2·1·GO »** à la fin du head start.
 - **Repérage (reveal)** : la position des fuyards "flashe" à la police par
   intervalles (ping), et reste affichée en permanence dans les dernières
   secondes. Affichage par marqueur à l'écran + flèche directionnelle quand le
@@ -75,6 +78,7 @@ Tout est réglable à chaud côté serveur :
 | `luarace_headstart`             | `15`   | Avance laissée aux fuyards (s)                     |
 | `luarace_bust_radius`           | `350`  | Distance d'arrestation (units)                     |
 | `luarace_bust_time`             | `10`   | Temps de proximité requis pour coffrer (s)         |
+| `luarace_bust_max_speed`        | `200`  | Vitesse max du fuyard (u/s) pour être arrêtable    |
 | `luarace_reveal_interval`       | `20`   | Intervalle entre deux pings de repérage (s)        |
 | `luarace_reveal_duration`       | `5`    | Durée d'un ping (s)                                |
 | `luarace_final_reveal`          | `30`   | Repérage permanent dans les N dernières secondes   |

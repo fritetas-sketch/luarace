@@ -57,6 +57,59 @@ local function drawRunnerBlip( pos, name )
 	end
 end
 
+-- Small filled circle helper (uses a rounded box at full corner radius).
+local function dot( x, y, r, col )
+	draw.RoundedBox( r, x - r, y - r, r * 2, r * 2, col )
+end
+
+-- Bottom-right circular radar: plots revealed runners around the viewer,
+-- rotated so "up" is the direction the viewer is facing.
+local RADAR_RANGE = 6000
+local function drawRadar()
+	local radius = 96
+	local cx = ScrW() - radius - 28
+	local cy = ScrH() - radius - 28
+
+	-- Dish.
+	draw.RoundedBox( radius, cx - radius, cy - radius, radius * 2, radius * 2, Color( 12, 14, 20, 205 ) )
+
+	-- Cross lines.
+	surface.SetDrawColor( 60, 60, 75, 120 )
+	surface.DrawLine( cx - radius, cy, cx + radius, cy )
+	surface.DrawLine( cx, cy - radius, cx, cy + radius )
+
+	-- Viewer in the centre, facing up.
+	dot( cx, cy, 4, Color( 90, 200, 255 ) )
+	draw.SimpleText( "AV", "LuaRace.Small", cx, cy - radius + 11, Color( 170, 170, 185 ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER )
+
+	local ang   = Angle( 0, EyeAngles().yaw, 0 )
+	local fwd   = ang:Forward()
+	local right = ang:Right()
+	local loc   = LocalPlayer():GetPos()
+	local col   = LuaRace.RoleColors[ LuaRace.ROLE_RUNNER ]
+
+	for _, info in ipairs( C.revealed ) do
+		local d = info.pos - loc
+		d.z = 0
+
+		local up = d:Dot( fwd )
+		local rt = d:Dot( right )
+
+		local px = rt / RADAR_RANGE * radius
+		local py = -up / RADAR_RANGE * radius
+
+		-- Clamp to the rim if out of range, with a hollow look.
+		local mag = math.sqrt( px * px + py * py )
+		local atEdge = mag > radius - 6
+		if atEdge and mag > 0 then
+			local s = ( radius - 6 ) / mag
+			px, py = px * s, py * s
+		end
+
+		dot( cx + px, cy + py, atEdge and 4 or 6, col )
+	end
+end
+
 hook.Add( "HUDPaint", "LuaRace.Blips", function()
 	if C.state ~= LuaRace.STATE_RUNNING then return end
 
@@ -68,4 +121,6 @@ hook.Add( "HUDPaint", "LuaRace.Blips", function()
 		local name = IsValid( info.ent ) and info.ent:Nick() or "Fuyard"
 		drawRunnerBlip( info.pos, name )
 	end
+
+	drawRadar()
 end )

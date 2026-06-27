@@ -42,14 +42,17 @@ function LuaRace.UpdateBusts( now )
 
 	local radius   = LuaRace.Cvar( "bust_radius" )
 	local bustTime = LuaRace.Cvar( "bust_time" )
+	local maxSpeed = LuaRace.Cvar( "bust_max_speed" )
 
 	for _, ply in player.Iterator() do
 		if LuaRace.IsRunner( ply ) and LuaRace.IsParticipant( ply ) and not LuaRace.IsBusted( ply ) then
 			local pos = LuaRace.GetTrackPos( ply )
 			local cop, dist = NearestCop( pos, radius )
+			local slow = LuaRace.GetTrackSpeed( ply ) <= maxSpeed
 
 			local p = progress[ ply ] or 0
-			if cop then
+			if cop and slow then
+				-- Runner is cornered/stopped with a cop close: bust builds up.
 				-- Closer cops bust faster: full speed at the edge, 1.6x point-blank.
 				local closeness = 1 + ( 1 - dist / radius ) * 0.6
 				p = p + dt * closeness
@@ -57,6 +60,8 @@ function LuaRace.UpdateBusts( now )
 					Bust( ply, cop )
 					p = 0
 				end
+			elseif cop and not slow then
+				-- Cop is close but the runner is still fleeing fast: hold, no build.
 			else
 				-- Cooling off when nobody is near (slower than it builds).
 				p = math.max( 0, p - dt * 0.75 )
