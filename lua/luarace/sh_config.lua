@@ -120,6 +120,9 @@ if SERVER then
 	-- If 1, the addon spawns each player's chosen role car and seats them in it.
 	CreateConVar( "luarace_give_vehicles", "1", FCVAR, "Spawn role vehicles for participants at race start", 0, 1 )
 
+	-- If 1, participants can't leave their vehicle during a race (re-seated if they do).
+	CreateConVar( "luarace_lock_vehicle", "1", FCVAR, "Prevent participants from exiting their vehicle mid-race", 0, 1 )
+
 	-- Minimum players needed to start a race.
 	CreateConVar( "luarace_min_players", "2", FCVAR, "Minimum participants required to start", 1, 64 )
 

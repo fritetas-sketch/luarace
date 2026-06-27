@@ -23,7 +23,7 @@ local function diamond( x, y, r, col )
 	surface.DrawPoly( poly )
 end
 
-local function drawRunnerBlip( pos, name )
+local function drawRunnerBlip( pos, name, bustable )
 	local col = LuaRace.RoleColors[ LuaRace.ROLE_RUNNER ]
 	local localPos = EyePos()
 	local dist = meters( localPos:Distance( pos ) )
@@ -41,6 +41,13 @@ local function drawRunnerBlip( pos, name )
 			col, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black )
 		draw.SimpleTextOutlined( dist .. " m", "LuaRace.Small", screen.x, screen.y + 22,
 			color_white, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black )
+
+		-- Hint to cops: this runner is slow enough to be arrested right now.
+		if bustable then
+			local pulse = 160 + math.sin( CurTime() * 8 ) * 95
+			draw.SimpleTextOutlined( "IMMOBILISEZ-LE !", "LuaRace.Med", screen.x, screen.y - 50,
+				Color( 255, 230, 60, pulse ), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, color_black )
+		end
 	else
 		-- Off-screen: clamp to a ring and draw an arrow pointing there.
 		local cx, cy = sw * 0.5, sh * 0.5
@@ -119,7 +126,8 @@ hook.Add( "HUDPaint", "LuaRace.Blips", function()
 
 	for _, info in ipairs( C.revealed ) do
 		local name = IsValid( info.ent ) and info.ent:Nick() or "Fuyard"
-		drawRunnerBlip( info.pos, name )
+		local bustable = IsValid( info.ent ) and info.ent:GetNWBool( LuaRace.NW_BUSTABLE, false )
+		drawRunnerBlip( info.pos, name, bustable )
 	end
 
 	drawRadar()

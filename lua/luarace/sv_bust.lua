@@ -50,6 +50,10 @@ function LuaRace.UpdateBusts( now )
 			local cop, dist = NearestCop( pos, radius )
 			local slow = LuaRace.GetTrackSpeed( ply ) <= maxSpeed
 
+			-- Tell clients whether this runner is currently arrestable (for the
+			-- "IMMOBILISEZ-LE" hint shown to cops).
+			ply:SetNWBool( LuaRace.NW_BUSTABLE, slow )
+
 			local p = progress[ ply ] or 0
 			if cop and slow then
 				-- Runner is cornered/stopped with a cop close: bust builds up.

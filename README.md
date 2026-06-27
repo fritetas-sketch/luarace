@@ -26,6 +26,12 @@ Tous les autres joueurs sont la **police** et doivent les coffrer avant la fin.
   progression prévient le fuyard qu'il est en train de se faire prendre.
 - **Mini-radar** circulaire en bas à droite + flèches directionnelles pour la
   police, et un **décompte plein écran « 3·2·1·GO »** à la fin du head start.
+- **Indice « IMMOBILISEZ-LE ! »** affiché au-dessus d'un fuyard repéré dès qu'il
+  est assez lent pour être arrêté, pour guider les flics.
+- **Véhicule verrouillé** : impossible de descendre de sa voiture pendant la
+  course (réglable via `luarace_lock_vehicle`).
+- Le **choix de voiture est strictement individuel** (par joueur), confirmé en
+  chat privé au joueur qui le change.
 - **Repérage (reveal)** : la position des fuyards "flashe" à la police par
   intervalles (ping), et reste affichée en permanence dans les dernières
   secondes. Affichage par marqueur à l'écran + flèche directionnelle quand le
@@ -83,6 +89,8 @@ Tout est réglable à chaud côté serveur :
 | `luarace_reveal_duration`       | `5`    | Durée d'un ping (s)                                |
 | `luarace_final_reveal`          | `30`   | Repérage permanent dans les N dernières secondes   |
 | `luarace_require_vehicle`       | `0`    | 1 = ne compter que les joueurs dans un Glide       |
+| `luarace_give_vehicles`         | `1`    | Spawn auto des voitures de rôle au départ          |
+| `luarace_lock_vehicle`          | `1`    | Empêche de descendre de la voiture pendant la course |
 | `luarace_min_players`           | `2`    | Joueurs minimum pour lancer                        |
 | `luarace_results_time`          | `10`   | Durée de l'écran de résultats (s)                  |
 

@@ -95,6 +95,7 @@ local function ResetPlayers()
 		ply:SetNWBool( LuaRace.NW_PARTICIPANT, false )
 		ply:SetNWBool( LuaRace.NW_BUSTED, false )
 		ply:SetNWFloat( LuaRace.NW_BUSTPROG, 0 )
+		ply:SetNWBool( LuaRace.NW_BUSTABLE, false )
 	end
 end
 
@@ -223,4 +224,29 @@ end )
 -- New joiners get a clean state pushed to them.
 hook.Add( "PlayerInitialSpawn", "LuaRace.Welcome", function()
 	timer.Simple( 3, LuaRace.Broadcast )
+end )
+
+----------------------------------------------------------------------
+-- Vehicle lock: active participants can't leave their car mid-race.
+----------------------------------------------------------------------
+
+local function ShouldLockVehicle( ply )
+	if LuaRace.Cvar( "lock_vehicle" ) < 1 then return false end
+	if G.state ~= LuaRace.STATE_COUNTDOWN and G.state ~= LuaRace.STATE_RUNNING then return false end
+	return LuaRace.IsParticipant( ply ) and not LuaRace.IsBusted( ply )
+end
+
+-- First line of defence: deny the exit outright.
+hook.Add( "CanExitVehicle", "LuaRace.LockExit", function( veh, ply )
+	if ShouldLockVehicle( ply ) then return false end
+end )
+
+-- Fallback in case Glide bypasses CanExitVehicle: re-seat them next tick.
+hook.Add( "PlayerLeaveVehicle", "LuaRace.ReSeat", function( veh, ply )
+	if not ShouldLockVehicle( ply ) then return end
+	timer.Simple( 0.1, function()
+		if IsValid( ply ) and IsValid( veh ) and ShouldLockVehicle( ply ) and not ply:InVehicle() then
+			ply:EnterVehicle( veh )
+		end
+	end )
 end )

@@ -20,6 +20,15 @@ net.Receive( "LuaRace.PickVehicle", function( _, ply )
 
 	local id = ply:SteamID64()
 	LuaRace.Choices[ id ] = LuaRace.Choices[ id ] or {}
+
+	-- Only confirm in chat when it actually changes (avoids spam on the
+	-- automatic sync at spawn), and only to this player: the choice is
+	-- strictly individual.
+	if LuaRace.Choices[ id ][ role ] ~= class then
+		local roleName = role == LuaRace.ROLE_RUNNER and "Fuyard" or "Police"
+		ply:ChatPrint( "[LuaRace] Votre voiture (" .. roleName .. ") : " .. LuaRace.VehicleLabel( class ) )
+	end
+
 	LuaRace.Choices[ id ][ role ] = class
 end )
 

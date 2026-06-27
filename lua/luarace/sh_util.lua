@@ -14,6 +14,7 @@ LuaRace.NW_ROLE        = "LuaRace_Role"        -- int role
 LuaRace.NW_PARTICIPANT = "LuaRace_InRace"      -- bool
 LuaRace.NW_BUSTED      = "LuaRace_Busted"      -- bool (runner caught)
 LuaRace.NW_BUSTPROG    = "LuaRace_BustProgress"-- float 0-1 (runner being busted)
+LuaRace.NW_BUSTABLE    = "LuaRace_Bustable"     -- bool (runner slow enough to arrest)
 
 --[[ Role helpers. Safe to call on both realms. ]]
 function LuaRace.GetRole( ply )
