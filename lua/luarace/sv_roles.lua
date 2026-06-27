@@ -25,19 +25,38 @@ function LuaRace.CalcRunnerCount( numPlayers )
 	return math.max( 1, math.floor( numPlayers / per ) )
 end
 
--- Pick runners at random, everyone else becomes a cop.
+-- How many times each player has been a runner (anti-repeat rotation).
+LuaRace.RunnerHistory = LuaRace.RunnerHistory or {}
+
+local function runnerCountOf( ply )
+	return LuaRace.RunnerHistory[ ply:SteamID64() ] or 0
+end
+
+-- Pick runners fairly: players who have been runner the fewest times go first,
+-- with randomness breaking ties so it's not always the same person.
 function LuaRace.AssignRoles( participants )
-	-- Fisher-Yates shuffle so runner selection is fair.
+	-- Fisher-Yates shuffle first (random tiebreaker).
 	local pool = table.Copy( participants )
 	for i = #pool, 2, -1 do
 		local j = math.random( i )
 		pool[ i ], pool[ j ] = pool[ j ], pool[ i ]
 	end
 
+	-- Then stable-sort by how often they've already been a runner (ascending),
+	-- so the least-recently-picked rotate in.
+	table.sort( pool, function( a, b )
+		return runnerCountOf( a ) < runnerCountOf( b )
+	end )
+
 	local runnerCount = LuaRace.CalcRunnerCount( #pool )
 
 	for index, ply in ipairs( pool ) do
 		local role = ( index <= runnerCount ) and LuaRace.ROLE_RUNNER or LuaRace.ROLE_COP
+
+		if role == LuaRace.ROLE_RUNNER then
+			local id = ply:SteamID64()
+			LuaRace.RunnerHistory[ id ] = ( LuaRace.RunnerHistory[ id ] or 0 ) + 1
+		end
 
 		ply:SetNWInt( LuaRace.NW_ROLE, role )
 		ply:SetNWBool( LuaRace.NW_PARTICIPANT, true )

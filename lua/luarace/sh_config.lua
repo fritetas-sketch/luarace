@@ -103,7 +103,7 @@ if SERVER then
 	-- Bust: a cop must stay within this radius of a runner...
 	CreateConVar( "luarace_bust_radius", "350", FCVAR, "Distance (units) at which a cop can bust a runner", 100, 2000 )
 	-- ...for this many continuous seconds to bust them.
-	CreateConVar( "luarace_bust_time", "4", FCVAR, "Seconds a cop must stay close to bust a runner", 0.5, 30 )
+	CreateConVar( "luarace_bust_time", "10", FCVAR, "Seconds a cop must stay close to bust a runner", 0.5, 60 )
 
 	-- Reveal pings: every interval, runner positions flash to cops for a duration.
 	CreateConVar( "luarace_reveal_interval", "20", FCVAR, "Seconds between runner reveal pings", 0, 300 )

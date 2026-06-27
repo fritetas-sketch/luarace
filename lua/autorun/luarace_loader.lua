@@ -29,6 +29,7 @@ local CLIENT_FILES = {
 	"luarace/cl_net.lua",
 	"luarace/cl_hud.lua",
 	"luarace/cl_blips.lua",
+	"luarace/cl_panel.lua",
 	"luarace/cl_menu.lua",
 }
 

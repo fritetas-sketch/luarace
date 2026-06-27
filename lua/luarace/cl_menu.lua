@@ -106,6 +106,27 @@ function LuaRace.OpenMenu()
 	copPanel.Paint = nil
 	buildList( copPanel, LuaRace.ROLE_COP, "luarace_pref_cop" )
 	sheet:AddSheet( "Police", copPanel, "icon16/shield.png" )
+
+	-- Admin race controls at the bottom.
+	if LocalPlayer():IsAdmin() then
+		local bar = frame:Add( "DPanel" )
+		bar:Dock( BOTTOM )
+		bar:DockMargin( 4, 4, 4, 0 )
+		bar:SetTall( 40 )
+		bar.Paint = nil
+
+		local start = bar:Add( "DButton" )
+		start:Dock( LEFT )
+		start:DockMargin( 0, 0, 4, 0 )
+		start:SetWide( 250 )
+		start:SetText( "Lancer la course" )
+		start.DoClick = function() RunConsoleCommand( "luarace_start" ) end
+
+		local stop = bar:Add( "DButton" )
+		stop:Dock( FILL )
+		stop:SetText( "Arreter" )
+		stop.DoClick = function() RunConsoleCommand( "luarace_stop" ) end
+	end
 end
 
 concommand.Add( "luarace_menu", LuaRace.OpenMenu )

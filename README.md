@@ -8,6 +8,8 @@ utilisant les véhicules de l'addon [Glide](https://github.com/StyledStrike/gmod
 Un (ou plusieurs) **fuyards** doivent survivre à la traque pendant un chrono.
 Tous les autres joueurs sont la **police** et doivent les coffrer avant la fin.
 
+- **Rotation équitable** : le choix des fuyards privilégie les joueurs qui l'ont
+  le moins souvent été, pour éviter que ce soit toujours la même personne.
 - **Ratio automatique** : `fuyards = max(1, floor(joueurs / 5))`.
   - 7 joueurs → 1 fuyard
   - 10 joueurs → 2 fuyards
@@ -72,7 +74,7 @@ Tout est réglable à chaud côté serveur :
 | `luarace_round_time`            | `120`  | Durée de la course (s)                             |
 | `luarace_headstart`             | `15`   | Avance laissée aux fuyards (s)                     |
 | `luarace_bust_radius`           | `350`  | Distance d'arrestation (units)                     |
-| `luarace_bust_time`             | `4`    | Temps de proximité requis pour coffrer (s)         |
+| `luarace_bust_time`             | `10`   | Temps de proximité requis pour coffrer (s)         |
 | `luarace_reveal_interval`       | `20`   | Intervalle entre deux pings de repérage (s)        |
 | `luarace_reveal_duration`       | `5`    | Durée d'un ping (s)                                |
 | `luarace_final_reveal`          | `30`   | Repérage permanent dans les N dernières secondes   |
@@ -96,7 +98,8 @@ lua/luarace/
   cl_net.lua      -- réception de l'état + events (sons/popups)
   cl_hud.lua      -- HUD (chrono, rôle, scores, barre d'arrestation)
   cl_blips.lua    -- marqueurs/flèches des fuyards repérés
-  cl_menu.lua     -- menu de sélection du véhicule
+  cl_panel.lua    -- panneau liste des participants (live)
+  cl_menu.lua     -- menu de sélection du véhicule + contrôles admin
 ```
 
 ## Idées / roadmap
